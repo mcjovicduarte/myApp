@@ -1,51 +1,35 @@
 <?php
-// start session
 session_start();
-
-// include database connection
 include 'actions/db.php';
 
-// if session user does not exist
 if (empty($_SESSION['user'])) {
     header('Location: login.php');
     exit();
 }
 
-// fetch login user session
 $user = $_SESSION['user'];
 
 try {
-    // Retrieve all posts made by current user from the Posts table, including post_image
     $sql = "SELECT * FROM posts WHERE user_id = :user_id";
     $result = $conn->prepare($sql);
     $result->bindParam(':user_id', $user['id']);
     $result->execute();
-
-    // set fetch mode
     $result->setFetchMode(PDO::FETCH_ASSOC);
-
-    // get all posts
     $posts = $result->fetchAll();
 
-    // Retrieve all posts made by current user and others, including post_image, ordered by post_date DESC
     $timeline_sql = "SELECT user.username, posts.post_text, posts.post_date, posts.post_image, posts.id AS post_id
                     FROM user
                     JOIN posts ON user.id = posts.user_id
-                    ORDER BY posts.post_date DESC"; // Changed to DESC for most recent posts first
+                    ORDER BY posts.post_date DESC";
     $timeline_result = $conn->prepare($timeline_sql);
     $timeline_result->execute();
-
-    // set fetch mode
     $timeline_result->setFetchMode(PDO::FETCH_ASSOC);
-
-    // get all posts
     $time_posts = $timeline_result->fetchAll();
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
 
-// Function to get like count for each post
 function getLikeCount($postId) {
     global $conn;
     $sql = "SELECT COUNT(*) AS like_count FROM likes WHERE post_id = :post_id";
@@ -157,23 +141,16 @@ function getLikeCount($postId) {
     <div class="container">
         <div class="form-container bg-light">
             <form action="actions/action_add_post.php" method="post" enctype="multipart/form-data">
-                <!-- Post Input -->
                 <div class="mb-3">
                     <input type="text" class="form-control" style="border-radius: 12px; border: solid; border-color: #014bad;" id="post" name="post" placeholder="Write your post here" required>
                 </div>
-                
-                <!-- Image Upload -->
                 <div class="mb-3">
                     <input type="file" class="form-control" style="border-radius: 12px; border: solid; border-color: #014BAD;" id="image" name="image" accept="image/*" required>
                 </div>
-                
-                <!-- Submit Button -->
                 <button type="submit" style="border-radius: 12px; border-color: #014bad;" class="btn btn-primary w-100">Submit</button>
             </form>
         </div>
     </div>
-
-
 
     <h5>Timeline</h5>
     <ul class="list-unstyled">
@@ -188,23 +165,18 @@ function getLikeCount($postId) {
                         <img src="<?php echo htmlspecialchars($time_post['post_image']); ?>" alt="Post Image" class="img-fluid rounded">
                     </div>
                 <?php } ?>
-                
                 <div class="d-flex align-items-center">
-                    <!-- Like Button -->
                     <button class="like-btn" onclick="toggleLike(<?php echo $time_post['post_id']; ?>)">
                         <i class="fa-regular fa-heart" id="like-icon-<?php echo $time_post['post_id']; ?>"></i>
                     </button>
                     <span id="like-count-<?php echo $time_post['post_id']; ?>"><?php echo getLikeCount($time_post['post_id']); ?></span> Likes
                 </div>
-
                 <small class="text-muted"><?php echo htmlspecialchars($time_post['post_date']); ?></small>
             </li>
         <?php } ?>
     </ul>
 
-
     <script src="js/script.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </body>
