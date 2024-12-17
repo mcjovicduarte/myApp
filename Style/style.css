@@ -1,0 +1,63 @@
+/* login page */
+.loginTitle h1 {
+    color: #014bad;
+    font-family: "Holtwood One SC", serif;
+    font-size: 36px;
+    font-weight: 400;
+}
+.loginForm input {
+    border: solid;
+    border-radius: 25px;
+    width: 350px;
+    border-color: #014bad;
+    margin-left: 30px;
+    padding: 10px;
+}
+.loginForm label {
+    color: #014BAD;
+    margin-left: 40px;
+}
+.loginForm button {
+    border-radius: 25px;
+    width: 350px;
+    background-color: #014bad;
+    margin-left: 30px;
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+    border: none;
+}
+.loginForm p {
+    margin-left: 35px;
+    font-size: 17px;
+}
+/* sign up page */
+.text-signup h1 {
+    color: #014bad;
+    font-family: "Inter", serif;
+    font-size: 36px;
+    font-weight: 700;
+}
+.signup-form input {
+    border: solid;
+    border-radius: 25px;
+    width: 350px;
+    border-color: #014bad;
+    margin-left: 15px;
+    padding: 10px;
+    margin-top: 25px;
+}
+.signup-form button {
+    border: solid;
+    border-radius: 25px;
+    width: 350px;
+    background-color: #014bad;
+    margin-left: 15px;
+    padding: 10px;
+    margin-top: 25px;
+    color: white;
+}
+.signup-form p {
+    margin-left: 25px;
+}
+/* post page */
